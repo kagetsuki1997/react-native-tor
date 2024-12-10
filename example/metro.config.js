@@ -1,7 +1,10 @@
 const path = require('path');
-const blacklist = require('metro-config/src/defaults/blacklist');
+const blacklist = require('metro-config/src/defaults/exclusionList');
 const escape = require('escape-string-regexp');
 const pak = require('../package.json');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+
+const defaultConfig = getDefaultConfig(__dirname);
 
 const root = path.resolve(__dirname, '..');
 
@@ -9,12 +12,23 @@ const modules = Object.keys({
   ...pak.peerDependencies,
 });
 
-module.exports = {
-  projectRoot: __dirname,
-  watchFolders: [root],
+const {
+  resolver: { sourceExts, assetExts },
+} = getDefaultConfig(__dirname);
 
-  // We need to make sure that only one version is loaded for peerDependencies
-  // So we blacklist them at the root, and alias them to the versions in example's node_modules
+const config = {
+  server: {
+    port:8083,
+  },
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true,
+      },
+    }),
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+  },
   resolver: {
     blacklistRE: blacklist(
       modules.map(
@@ -27,14 +41,12 @@ module.exports = {
       acc[name] = path.join(__dirname, 'node_modules', name);
       return acc;
     }, {}),
-  },
-
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: true,
-      },
-    }),
+    assetExts: assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...sourceExts, 'svg'],
+    watchFolders: [path.resolve(__dirname, '../../')]
   },
 };
+
+module.exports = mergeConfig(defaultConfig, config);
+module.exports.projectRoot=__dirname;
+module.exports.watchFolders=[root];

@@ -12,7 +12,7 @@ export default function App() {
   const [socksPort, setSocksPort] = React.useState<number | undefined>();
   const [trustSSL, setTrustSSL] = React.useState<boolean>(true);
   const [onion, setOnion] = React.useState<string | undefined>(
-    'http://3g2upl4pq6kufc4m.onion'
+    'http://check.torproject.org'
   );
   const [hasStream, setHasStream] = React.useState(false);
   const [
