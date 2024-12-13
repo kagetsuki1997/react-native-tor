@@ -27,7 +27,9 @@ export default function App() {
     try {
       // Init and do a few basic calls to test all is good
       console.log('App init');
-      await client.startIfNotStarted();
+      const port = await client.startIfNotStarted();
+      console.log('App init: Tor started socks port', port);
+      setSocksPort(port);
     } catch (err) {
       console.error('Error starting daemon', err);
       await client.stopIfRunning();
