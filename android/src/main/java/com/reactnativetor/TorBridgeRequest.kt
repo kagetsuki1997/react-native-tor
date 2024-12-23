@@ -12,7 +12,7 @@ import java.io.IOException
 class TaskParam(
   val method: String,
   val url: String,
-  val json: String?,
+  val body: String?,
   val headers: HashMap<String, Any>?
 );
 
@@ -57,8 +57,12 @@ class TorBridgeRequest constructor(
         // TODO Expand supported content formats ?
         val body = when (param.headers?.get("Content-Type") ?: "application/json") {
           "application/x-www-form-urlencoded" ->
-            param.json!!.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaType())
-          else -> param.json!!.toRequestBody("application/json; charset=utf-8".toMediaType())
+            param.body!!.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaType())
+          "application/octet-stream" -> {
+            val decoded = Base64.decode(param.body!!,Base64.DEFAULT)
+            decoded.toRequestBody("application/octet-stream; charset=utf-8".toMediaType())
+          }
+          else -> param.body!!.toRequestBody("application/json; charset=utf-8".toMediaType())
         }
         Request.Builder().url(param.url)
           .post(body)

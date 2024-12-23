@@ -15,8 +15,7 @@
     "jsc-android": "^250231.0.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "react-native-svg-transformer": "^1.5.0",
-    "react-native-tor": "^0.1.8"
+    "react-native-svg-transformer": "^1.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

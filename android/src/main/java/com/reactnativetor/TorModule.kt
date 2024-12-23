@@ -126,7 +126,7 @@ class TorModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
   fun request(
     url: String,
     method: String,
-    jsonBody: String,
+    body: String,
     headers: ReadableMap,
     // FIXME move this to startDeamon call
     trustAllSSl: Boolean,
@@ -151,7 +151,7 @@ class TorModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
       return;
     }
 
-    val param = TaskParam(method, url, jsonBody, headers.toHashMap())
+    val param = TaskParam(method, url, body, headers.toHashMap())
     executorService.execute {
       try {
         val task = TorBridgeRequest(promise, _client!!, param);
