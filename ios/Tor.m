@@ -28,7 +28,7 @@ RCT_EXTERN_METHOD(
 RCT_EXTERN_METHOD(
         request:(NSString*)url
         method:(NSString*)method
-        jsonBody:(NSString*)jsonBody
+        body:(NSString*)body
         headers:(NSDictionary*)headers
         trustInvalidCert:(BOOL*)trustInvalidCert
         resolver:(RCTPromiseResolveBlock)resolve
